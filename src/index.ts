@@ -3,9 +3,9 @@
  */
 
 /**
- * Row major 2x2 matrix
+ * Flattened row major 2x2 matrix
  */
-export type Matrix2 = [number, number, number, number];
+export type Matrix = [number, number, number, number];
 
 /**
  * a point
@@ -21,7 +21,12 @@ export class Point {
     this.y = y;
   }
 
-  private _matMult(m: Matrix2): Point {
+  /**
+   * In place. Multiply this point by a 4x1 transformation matrix
+   * @param {Array<Number>} m transformation matrix
+   * @return {Point} _this_ point
+   */
+  _matMult(m: Matrix): Point {
     const x = m[0] * this.x + m[1] * this.y;
     const y = m[2] * this.x + m[3] * this.y;
     this.x = x;
@@ -29,55 +34,104 @@ export class Point {
     return this;
   }
 
-  private _add(p: Point): Point {
+  /**
+   * In place. Add another point to this point's x & y coordinates,
+   * @param {Point} p the other point
+   * @return {Point} _this_ point
+   */
+  _add(p: Point): Point {
     this.x += p.x;
     this.y += p.y;
     return this;
   }
 
-  private _sub(p: Point): Point {
+  /**
+   * In place. Subtract another point's x & y coordinates from _this_ point
+   * @param {Point} p the other point
+   * @return {Point}  _this_ point
+   */
+  _sub(p: Point): Point {
     this.x -= p.x;
     this.y -= p.y;
     return this;
   }
 
-  private _mult(k: number): Point {
+  /**
+   * In place. Multiply this point's x & y coordinates by a factor.
+   * @param {Number} k factor
+   * @return {Point} _this_ point
+   */
+  _mult(k: number): Point {
     this.x *= k;
     this.y *= k;
     return this;
   }
 
-  private _div(k: number): Point {
+  /**
+   * In place. Divide this point's x & y coordinates by a factor.
+   * @param {Point} k factor
+   * @return {Point} output point
+   */
+  _div(k: number): Point {
     this.x /= k;
     this.y /= k;
     return this;
   }
 
-  private _multByPoint(p: Point): Point {
+  /**
+   * In place. Multiply this point's x & y coordinates by another point.
+   * @param {Point} p the other point
+   * @return {Point} _this_
+   */
+  _multByPoint(p: Point): Point {
     this.x *= p.x;
     this.y *= p.y;
     return this;
   }
 
-  private _divByPoint(p: Point): Point {
+  /**
+   * In place. Divide this point's x & y coordinates by another point
+   * @param {Point} p the other point
+   * @return {Point} output point
+   */
+  _divByPoint(p: Point): Point {
     this.x /= p.x;
     this.y /= p.y;
     return this;
   }
 
-  private _unit(): Point {
+  /**
+   * In place. Calculate this point but as a unit vector from 0, 0, meaning
+   * that the distance from the resulting point to the 0, 0
+   * coordinate will be equal to 1 and the angle from the resulting
+   * point to the 0, 0 coordinate will be the same as before.
+   * @return {Point} _this_ point
+   */
+  _unit(): Point {
     this._div(this.mag());
     return this;
   }
 
-  private _perp(): Point {
+  /**
+   * In place. Compute a perpendicular point, where the new y coordinate
+   * is the old x coordinate and the new x coordinate is the old y
+   * coordinate multiplied by -1
+   * @return {Point} _this_ point
+   */
+  _perp(): Point {
     const y = this.y;
     this.y = this.x;
     this.x = -y;
     return this;
   }
 
-  private _rotate(angle: number): Point {
+  /**
+   * In place. Rotate this point around the 0, 0 origin by a given angle,
+   * given in radians
+   * @param {Number} a angle to rotate around, in radians
+   * @return {Point} _this_ point
+   */
+  _rotate(angle: number): Point {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
     const x = cos * this.x - sin * this.y;
@@ -87,7 +141,14 @@ export class Point {
     return this;
   }
 
-  private _rotateAround(angle: number, p: Point): Point {
+  /**
+   * In place. Rotate this point around p point by a given angle,
+   * given in radians
+   * @param {Number} a angle to rotate around, in radians
+   * @param {Point} p Point to rotate around
+   * @return {Point} _this_ point
+   */
+  _rotateAround(angle: number, p: Point): Point {
     const cos = Math.cos(angle);
     const sin = Math.sin(angle);
     const x = p.x + cos * (this.x - p.x) - sin * (this.y - p.y);
@@ -97,7 +158,11 @@ export class Point {
     return this;
   }
 
-  private _round(): Point {
+  /**
+   * In place. Rounds the x and y coordinates to the nearest integer.
+   * @return {Point} _this_ point
+   */
+  _round(): Point {
     this.x = Math.round(this.x);
     this.y = Math.round(this.y);
     return this;
@@ -123,7 +188,7 @@ export class Point {
   }
 
   /**
-   * Subtract this point's x & y coordinates to from point,
+   * Subtract another point's x & y coordinates from _this_ point,
    * yielding a new point.
    * @param {Point} p the other point
    * @return {Point} output point
@@ -133,7 +198,7 @@ export class Point {
   }
 
   /**
-   * Multiply this point's x & y coordinates by point,
+   * Multiply this point's x & y coordinates by another point,
    * yielding a new point.
    * @param {Point} p the other point
    * @return {Point} output point
@@ -198,7 +263,7 @@ export class Point {
    * @param {Array<Number>} m transformation matrix
    * @return {Point} output point
    */
-  matMult(m: Matrix2): Point {
+  matMult(m: Matrix): Point {
     return this.clone()._matMult(m);
   }
 
