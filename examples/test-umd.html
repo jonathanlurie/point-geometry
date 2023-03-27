@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Point</title>
+  </head>
+
+  <body>
+    <p>
+      Open JS console.
+    </p>
+
+    <script src ="../dist/maplibre-point-geometry.umd.js"></script>
+    
+    <script>
+      console.log(maplibrePointGeometry);
+
+      const pointA = new maplibrePointGeometry.Point(1, 1);
+      const pointB = new maplibrePointGeometry.Point(2, 2);
+
+      const pointC = pointA.add(pointB);
+      console.log(pointC);
+      console.log(`pointA + pointB = ${pointC}`);
+
+      console.log("distance:", pointA.dist(pointB));
+    </script>
+  </body>
+</html>

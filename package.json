@@ -1,0 +1,42 @@
+{
+  "name": "@maplibre/point-geometry",
+  "version": "1.0.0",
+  "description": "a point geometry with transforms",
+  "module": "dist/maplibre-point-geometry.mjs",
+  "types": "dist/maplibre-point-geometry.d.ts",
+  "author": "Jonathan Lurie",
+  "exports": {
+    ".": {
+      "import": "./dist/maplibre-point-geometry.mjs",
+      "require": "./dist/maplibre-point-geometry.cjs"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf dist/*; NODE_ENV=production rollup -c",
+    "dev": "rm -rf dist/*; NODE_ENV=development rollup -c -w",
+    "devserve": "rm -rf dist/*; NODE_ENV=development rollup -c -w & serve && fg",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx}\"",
+    "lint": "eslint --fix \"src/**/*.{js,ts}\"",
+    "doc": "rm -rf docs/*; typedoc",
+    "prepare": "npm run format; npm run lint; npm run build; npm run doc"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "eslint": "^8.27.0",
+    "prettier": "^2.7.1",
+    "rollup": "^2.79.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-esbuild": "^4.10.1",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-string": "^3.0.0",
+    "rollup-plugin-swc": "^0.2.1",
+    "serve": "^14.1.1",
+    "typedoc": "^0.23.20",
+    "typescript": "^4.8.3"
+  }
+}
